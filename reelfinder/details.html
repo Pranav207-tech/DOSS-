@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details – ReelFinder</title>
+    <meta name="description" content="Detailed overview, trailer, cast, and ratings for your selected movie on ReelFinder.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/discover.css">
+    <link rel="stylesheet" href="css/details-extra.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+</head>
+<body class="page-details">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">Reel<span class="gradient-text">Finder</span></span>
+            </a>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="discover.html" class="nav-link">Discover</a></li>
+                <li><a href="watchlist.html" class="nav-link">Watchlist</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="nav-search-btn" id="nav-search-btn" aria-label="Open search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+
+                <a href="watchlist.html" class="nav-watchlist-btn" aria-label="Watchlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span class="watchlist-badge" id="watchlist-badge" style="display:none">0</span>
+                </a>
+
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <div class="mobile-menu-inner">
+            <ul class="mobile-nav-links">
+                <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                <li><a href="discover.html" class="mobile-nav-link">Discover</a></li>
+                <li><a href="watchlist.html" class="mobile-nav-link">Watchlist</a></li>
+                <li><a href="index.html#about" class="mobile-nav-link">About</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- API Key Notice -->
+    <div id="api-key-warning" class="api-warning" style="display:none">
+        <div class="api-warning-content">
+            <span class="warning-icon">⚠️</span>
+            <div>
+                <strong>Curated Offline Demonstration</strong>
+                <p>Showing curated details. Add your TMDB API key in <code>js/config.js</code> to stream trailers, full cast & live data.</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.style.display='none'" aria-label="Dismiss warning">✕</button>
+        </div>
+    </div>
+
+    <!-- ==================== CINEMATIC BACKDROP ==================== -->
+    <div class="details-backdrop" id="details-backdrop">
+        <div class="backdrop-image" id="backdrop-image">
+            <div class="backdrop-gradient"></div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+    <div class="details-wrapper" id="details-content">
+        <div class="container">
+
+            <!-- Breadcrumbs / Back button -->
+            <div class="details-back-row">
+                <button type="button" class="back-btn" onclick="history.back()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to previous
+                </button>
+            </div>
+
+            <!-- Main Split Layout -->
+            <div class="details-layout">
+
+                <!-- Left Column: Poster & Quick Action Buttons -->
+                <div class="details-poster-col">
+                    <div class="details-poster-wrapper">
+                        <img 
+                            id="details-poster" 
+                            class="details-poster" 
+                            src="" 
+                            alt="Movie Poster"
+                        >
+                        <div class="poster-shine"></div>
+                    </div>
+
+                    <div class="poster-actions">
+                        <button type="button" class="btn-watchlist-detail" id="watchlist-btn" aria-pressed="false">
+                            🤍 Add to Watchlist
+                        </button>
+                        <a href="#" class="btn-trailer" id="trailer-btn" target="_blank" rel="noopener noreferrer" style="display:none">
+                            <span class="trailer-icon">▶</span> Watch Trailer
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Full Details & Synopsis -->
+                <div class="details-info-col">
+                    <div class="details-meta-top">
+                        <span class="details-media-type" id="details-media-type">Feature Film</span>
+                        <span class="details-year" id="details-year">—</span>
+                        <span class="details-status" id="details-status">Released</span>
+                    </div>
+
+                    <h1 class="details-title" id="details-title">Loading Movie...</h1>
+                    <p class="details-tagline" id="details-tagline"></p>
+
+                    <!-- Stats Row -->
+                    <div class="details-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">TMDB Rating</span>
+                            <span class="stat-value">
+                                <span class="rating-stars" id="rating-stars">⭐⭐⭐⭐⭐</span>
+                                <strong id="rating-value">—</strong><span class="stat-sub">/10</span>
+                            </span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Runtime</span>
+                            <span class="stat-value" id="details-runtime">—</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Release Date</span>
+                            <span class="stat-value" id="details-release">—</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Original Language</span>
+                            <span class="stat-value" id="details-language">—</span>
+                        </div>
+                    </div>
+
+                    <!-- Genre Pills -->
+                    <div class="details-genres" id="details-genres"></div>
+
+                    <!-- Overview Synopsis -->
+                    <div class="details-overview-section">
+                        <h2 class="overview-heading">Overview</h2>
+                        <p class="details-overview" id="details-overview">Retrieving synopsis and movie data...</p>
+                    </div>
+
+                    <!-- Key Cast Members -->
+                    <div class="details-cast-section" id="cast-section" style="display:none">
+                        <h3 class="cast-heading">Top Billed Cast</h3>
+                        <div class="cast-list" id="cast-list"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ==================== SIMILAR MOVIES SECTION ==================== -->
+            <section class="similar-section" id="similar-section" style="display:none">
+                <div class="section-header">
+                    <h2 class="section-title">🎬 You Might Also Enjoy</h2>
+                    <span class="section-subtitle">Similar thematic resonance and audience appeal</span>
+                </div>
+                <div class="movie-grid" id="similar-movies-grid"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div class="details-error" id="details-error" style="display:none">
+        <div class="container">
+            <div class="error-content">
+                <div class="error-icon">🎬</div>
+                <h2>Movie Details Unavailable</h2>
+                <p id="error-message">We couldn't retrieve the requested title. Please explore our discover catalog.</p>
+                <div class="error-actions">
+                    <a href="discover.html" class="btn btn--primary">Discover Movies</a>
+                    <a href="index.html" class="btn btn--secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">🎬 ReelFinder</div>
+                    <p class="footer-tagline">Don't search for movies. Find your next favourite.</p>
+                    <p class="footer-credit">Powered by <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB API</a></p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="discover.html">Discover</a></li>
+                        <li><a href="watchlist.html">Watchlist</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Discover</h4>
+                    <ul>
+                        <li><a href="discover.html">By Mood</a></li>
+                        <li><a href="discover.html">By Genre</a></li>
+                        <li><a href="discover.html">By Runtime</a></li>
+                        <li><a href="discover.html">By Language</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 ReelFinder. Movie data provided by TMDB. Not affiliated with TMDB.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Search Overlay & Toast -->
+    <div class="search-overlay" id="search-overlay" style="display:none" role="dialog" aria-modal="true" aria-label="Search movies">
+        <div class="search-overlay-inner">
+            <button class="close-search" id="close-search" aria-label="Close search">✕</button>
+            <div class="search-input-wrapper">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="search-input" placeholder="Search for movies, shows..." autocomplete="off">
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/details.js"></script>
+</body>
+</html>

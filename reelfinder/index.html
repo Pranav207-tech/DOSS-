@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReelFinder – Find Your Perfect Movie</title>
+    <meta name="description" content="Discover the perfect movie for your mood. ReelFinder helps you find movies based on mood, genre, time and language.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/details-extra.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Favicon using emoji -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+
+            <!-- Logo -->
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">Reel<span class="gradient-text">Finder</span></span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="discover.html" class="nav-link">Discover</a></li>
+                <li><a href="watchlist.html" class="nav-link">Watchlist</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+            </ul>
+
+            <!-- Nav Actions -->
+            <div class="nav-actions">
+                <!-- Search trigger -->
+                <button class="nav-search-btn" id="nav-search-btn" aria-label="Open search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+
+                <!-- Watchlist icon with badge -->
+                <a href="watchlist.html" class="nav-watchlist-btn" aria-label="Watchlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span class="watchlist-badge" id="watchlist-badge" style="display:none">0</span>
+                </a>
+
+                <!-- Hamburger -->
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- ==================== API KEY WARNING BANNER ==================== -->
+    <div id="api-key-warning" class="api-warning" style="display:none">
+        <div class="api-warning-content">
+            <span class="warning-icon">⚠️</span>
+            <div>
+                <strong>API Key Required</strong>
+                <p>Add your TMDB API key to <code>js/config.js</code> to load real movies.
+                Get a free key at <a href="https://www.themoviedb.org/settings/api" target="_blank">themoviedb.org</a>.
+                Showing sample data for now.</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.style.display='none'" aria-label="Dismiss warning">✕</button>
+        </div>
+    </div>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero" id="hero">
+
+        <!-- Decorative background elements -->
+        <div class="hero-bg">
+            <div class="hero-bg-circle hero-bg-circle--1"></div>
+            <div class="hero-bg-circle hero-bg-circle--2"></div>
+            <div class="hero-bg-circle hero-bg-circle--3"></div>
+            <div class="hero-bg-blur hero-bg-blur--1"></div>
+            <div class="hero-bg-blur hero-bg-blur--2"></div>
+        </div>
+
+        <div class="container hero-container">
+            <div class="hero-content">
+
+                <!-- Badge -->
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    <span>Powered by TMDB • Millions of titles</span>
+                </div>
+
+                <!-- Main Heading -->
+                <h1 class="hero-title">
+                    Find the Perfect Movie<br>
+                    for Your <span class="gradient-text">Mood.</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="hero-subtitle">Don't search for movies. Find your next favourite.</p>
+
+                <!-- Description -->
+                <p class="hero-description">
+                    ReelFinder curates movies based on how you feel right now — whether you want something
+                    epic, heartwarming, thrilling, or just a good laugh. Dive in and discover your next obsession.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="hero-actions">
+                    <a href="discover.html" class="btn btn--primary btn--lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        Discover Movies
+                    </a>
+                    <button class="btn btn--secondary btn--lg" id="surprise-btn">
+                        Surprise Me ✨
+                    </button>
+                </div>
+
+                <!-- Stats strip -->
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">500K+</span>
+                        <span class="hero-stat-label">Movies</span>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">10+</span>
+                        <span class="hero-stat-label">Moods</span>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">Free</span>
+                        <span class="hero-stat-label">Always</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Hero visual / floating cards decoration -->
+            <div class="hero-visual" aria-hidden="true">
+                <div class="hero-card-stack">
+                    <div class="hero-card hero-card--back"></div>
+                    <div class="hero-card hero-card--mid"></div>
+                    <div class="hero-card hero-card--front">
+                        <div class="hero-card-inner">
+                            <div class="hero-card-poster"></div>
+                            <div class="hero-card-info">
+                                <div class="hero-card-title-line"></div>
+                                <div class="hero-card-meta-line"></div>
+                                <div class="hero-card-rating">
+                                    <span>⭐</span>
+                                    <span class="hero-card-rating-num">8.4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator" aria-label="Scroll down">
+            <span class="scroll-label">Scroll</span>
+            <div class="scroll-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                </svg>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ==================== TRENDING SECTION ==================== -->
+    <section class="movies-section" id="trending">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <h2 class="section-title">🔥 Trending This Week</h2>
+                    <p class="section-subtitle">What everyone's watching right now</p>
+                </div>
+                <a href="discover.html" class="see-all-link">See All →</a>
+            </div>
+            <div class="movie-grid" id="trending-movies-grid">
+                <!-- Skeleton loaders -->
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== POPULAR SECTION ==================== -->
+    <section class="movies-section" id="popular">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <h2 class="section-title">🌟 Popular Now</h2>
+                    <p class="section-subtitle">Top-rated films loved by millions</p>
+                </div>
+                <a href="discover.html" class="see-all-link">See All →</a>
+            </div>
+            <div class="movie-grid" id="popular-movies-grid">
+                <!-- Skeleton loaders -->
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FEATURES SECTION ==================== -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header section-header--center">
+                <h2 class="section-title">Why ReelFinder?</h2>
+                <p class="section-subtitle">Everything you need to find your next great watch</p>
+            </div>
+            <div class="features-grid">
+
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">🎭</div>
+                    <h3 class="feature-title">Mood-Based Discovery</h3>
+                    <p class="feature-desc">
+                        Tell us your mood, we find your movie. Whether you're feeling adventurous,
+                        romantic, or just need a good laugh — we've got you covered.
+                    </p>
+                    <a href="discover.html" class="feature-link">Try it now →</a>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Smart Filtering</h3>
+                    <p class="feature-desc">
+                        Filter by genre, runtime, and language to zero in on exactly what you
+                        want to watch tonight. No more endless scrolling.
+                    </p>
+                    <a href="discover.html" class="feature-link">Start filtering →</a>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3 class="feature-title">Personal Watchlist</h3>
+                    <p class="feature-desc">
+                        Save movies to watch later and never forget a great recommendation again.
+                        Your watchlist lives right in your browser.
+                    </p>
+                    <a href="watchlist.html" class="feature-link">View watchlist →</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== HIDDEN GEMS SECTION ==================== -->
+    <section class="movies-section hidden-gems-section" id="hidden-gems">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <h2 class="section-title">💎 Hidden Gems</h2>
+                    <p class="section-subtitle">Critically acclaimed films you might have missed</p>
+                </div>
+                <a href="discover.html" class="see-all-link">See All →</a>
+            </div>
+            <div class="movie-grid" id="hidden-gems-grid">
+                <!-- Skeleton loaders -->
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MOOD PICKER CTA ==================== -->
+    <section class="mood-cta-section">
+        <div class="container">
+            <div class="mood-cta-card">
+                <div class="mood-cta-content">
+                    <h2 class="mood-cta-title">What's your mood right now?</h2>
+                    <p class="mood-cta-desc">
+                        Pick a vibe and let ReelFinder curate a personalised list just for you.
+                    </p>
+                    <div class="mood-chips">
+                        <a href="discover.html?mood=Happy" class="mood-chip">😊 Happy</a>
+                        <a href="discover.html?mood=Sad" class="mood-chip">😢 Sad</a>
+                        <a href="discover.html?mood=Romantic" class="mood-chip">🥰 Romantic</a>
+                        <a href="discover.html?mood=Excited" class="mood-chip">🤩 Excited</a>
+                        <a href="discover.html?mood=Suspenseful" class="mood-chip">😰 Suspenseful</a>
+                        <a href="discover.html?mood=Relaxed" class="mood-chip">😌 Relaxed</a>
+                        <a href="discover.html?mood=Adventurous" class="mood-chip">🤠 Adventurous</a>
+                        <a href="discover.html?mood=Thoughtful" class="mood-chip">🤔 Thoughtful</a>
+                    </div>
+                </div>
+                <div class="mood-cta-decoration" aria-hidden="true">
+                    <div class="mood-deco-emoji mood-deco-emoji--1">🎬</div>
+                    <div class="mood-deco-emoji mood-deco-emoji--2">🍿</div>
+                    <div class="mood-deco-emoji mood-deco-emoji--3">⭐</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-inner">
+                <div class="about-text">
+                    <span class="about-eyebrow">About ReelFinder</span>
+                    <h2 class="about-title">Your cinematic compass</h2>
+                    <p class="about-desc">
+                        ReelFinder is a free, open movie discovery platform built to cut through
+                        decision fatigue. We tap into the TMDB database — home to over half a million
+                        films — and surface titles matched to your exact mood and preferences.
+                    </p>
+                    <p class="about-desc">
+                        No subscriptions, no accounts, no algorithms hidden behind a paywall.
+                        Just great movies, found faster.
+                    </p>
+                    <div class="about-tagline">"Don't search for movies. Find your next favourite."</div>
+                    <a href="discover.html" class="btn btn--primary">
+                        Start Discovering
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+                <div class="about-visual" aria-hidden="true">
+                    <div class="about-stat-grid">
+                        <div class="about-stat-card">
+                            <div class="about-stat-icon">🎬</div>
+                            <div class="about-stat-number">500K+</div>
+                            <div class="about-stat-label">Movies in DB</div>
+                        </div>
+                        <div class="about-stat-card">
+                            <div class="about-stat-icon">🌍</div>
+                            <div class="about-stat-number">50+</div>
+                            <div class="about-stat-label">Languages</div>
+                        </div>
+                        <div class="about-stat-card">
+                            <div class="about-stat-icon">🎭</div>
+                            <div class="about-stat-number">10+</div>
+                            <div class="about-stat-label">Mood Types</div>
+                        </div>
+                        <div class="about-stat-card">
+                            <div class="about-stat-icon">⚡</div>
+                            <div class="about-stat-number">Free</div>
+                            <div class="about-stat-label">Always &amp; Forever</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <div class="footer-logo">🎬 ReelFinder</div>
+                    <p class="footer-tagline">Don't search for movies. Find your next favourite.</p>
+                    <p class="footer-credit">Powered by <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB API</a></p>
+                </div>
+
+                <!-- Navigation links -->
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="discover.html">Discover</a></li>
+                        <li><a href="watchlist.html">Watchlist</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+
+                <!-- Discover links -->
+                <div class="footer-links">
+                    <h4>Discover</h4>
+                    <ul>
+                        <li><a href="discover.html">By Mood</a></li>
+                        <li><a href="discover.html">By Genre</a></li>
+                        <li><a href="discover.html">By Runtime</a></li>
+                        <li><a href="discover.html">By Language</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2024 ReelFinder. Movie data provided by TMDB. Not affiliated with TMDB.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== SEARCH OVERLAY ==================== -->
+    <div class="search-overlay" id="search-overlay" style="display:none" role="dialog" aria-modal="true" aria-label="Search movies">
+        <div class="search-overlay-inner">
+            <button class="close-search" id="close-search" aria-label="Close search">✕</button>
+            <div class="search-input-wrapper">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search for movies, shows..."
+                    autocomplete="off"
+                    aria-label="Search movies"
+                >
+            </div>
+            <div class="search-results" id="search-results" role="list" aria-live="polite"></div>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST CONTAINER ==================== -->
+    <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover – ReelFinder</title>
+    <meta name="description" content="Tell us your mood, preferred genre, time and language, and ReelFinder will curate the perfect movie recommendations for you.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/discover.css">
+    <link rel="stylesheet" href="css/details-extra.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+</head>
+<body>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">Reel<span class="gradient-text">Finder</span></span>
+            </a>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="discover.html" class="nav-link active">Discover</a></li>
+                <li><a href="watchlist.html" class="nav-link">Watchlist</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="nav-search-btn" id="nav-search-btn" aria-label="Open search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+
+                <a href="watchlist.html" class="nav-watchlist-btn" aria-label="Watchlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span class="watchlist-badge" id="watchlist-badge" style="display:none">0</span>
+                </a>
+
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <div class="mobile-menu-inner">
+            <ul class="mobile-nav-links">
+                <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                <li><a href="discover.html" class="mobile-nav-link active">Discover</a></li>
+                <li><a href="watchlist.html" class="mobile-nav-link">Watchlist</a></li>
+                <li><a href="index.html#about" class="mobile-nav-link">About</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- API Key Warning Banner -->
+    <div id="api-key-warning" class="api-warning" style="display:none">
+        <div class="api-warning-content">
+            <span class="warning-icon">⚠️</span>
+            <div>
+                <strong>API Key Required</strong>
+                <p>Add your TMDB API key to <code>js/config.js</code> to load real movies.
+                Get a free key at <a href="https://www.themoviedb.org/settings/api" target="_blank">themoviedb.org</a>.
+                Showing sample recommendations for now.</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.style.display='none'" aria-label="Dismiss warning">✕</button>
+        </div>
+    </div>
+
+    <!-- ==================== DISCOVER HERO ==================== -->
+    <section class="discover-hero">
+        <div class="container">
+            <div class="discover-hero-content">
+                <span class="discover-eyebrow">Interactive Movie Matcher</span>
+                <h1 class="discover-title">What are you in the mood for?</h1>
+                <p class="discover-subtitle">Customize your vibe, genre, available time, and language to find movies tailored for tonight.</p>
+            </div>
+            <!-- Progress / Steps Indicator -->
+            <div class="steps-indicator" aria-label="Selection progress">
+                <div class="step-pill active" data-step="1"><span>01</span> Mood</div>
+                <div class="step-pill" data-step="2"><span>02</span> Genre</div>
+                <div class="step-pill" data-step="3"><span>03</span> Runtime</div>
+                <div class="step-pill" data-step="4"><span>04</span> Language</div>
+                <div class="step-pill" data-step="5"><span>05</span> Content Type</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PREFERENCES FORM / SECTIONS ==================== -->
+    <main class="discover-container container">
+
+        <!-- SECTION 1: MOOD -->
+        <section class="preference-section" id="mood-section">
+            <div class="preference-header">
+                <div class="pref-badge">Step 1</div>
+                <h2 class="preference-title">🎭 How are you feeling right now?</h2>
+                <p class="preference-subtitle">Select your mood to influence the tone and emotional resonance of the recommendation.</p>
+            </div>
+
+            <div class="mood-grid">
+                <div class="mood-card" data-mood="Happy" tabindex="0" role="button" aria-pressed="false">
+                    <span class="mood-emoji">😊</span>
+                    <span class="mood-label">Happy</span>
+                    <span class="mood-desc">Uplifting, feel-good & fun</span>
+                </div>
+                <div class="mood-card" data-mood="Sad" tabindex="0" role="button" aria-pressed="false">
+                    <span class="mood-emoji">😢</span>
+                    <span class="mood-label">Sad</span>
+                    <span class="mood-desc">Emotional, touching & tearjerkers</span>
+                </div>
+                <div class="mood-card" data-mood="Romantic" tabindex="0" role="button" aria-pressed="false">
+                    <span class="mood-emoji">🥰</span>
+                    <span class="mood-label">Romantic</span>
+                    <span class="mood-desc">Heartwarming love & chemistry</span>
+                </div>
+                <div class="mood-card" data-mood="Excited" tabindex="0" role="button" aria-pressed="false">
+                    <span class="mood-emoji">🤩</span>
+                    <span class="mood-label">Excited</span>
+                    <span class="mood-desc">High adrenaline, thrills & hype</span>
+                </div>
+                <div class="mood-card" data-mood="Suspenseful" tabindex="0" role="button" aria-pressed="false">
+                    <span class="mood-emoji">😰</span>
+                    <span class="mood-label">Suspenseful</span>
+                    <span class="mood-desc">Edge-of-seat twists & turns</span>
+                </div>
+                <div class="mood-card" data-mood="Relaxed" tabindex="0" role="button" aria-pressed="false">
+                    <span class="mood-emoji">😌</span>
+                    <span class="mood-label">Relaxed</span>
+                    <span class="mood-desc">Low stress, comforting & cozy</span>
+                </div>
+                <div class="mood-card" data-mood="Adventurous" tabindex="0" role="button" aria-pressed="false">
+                    <span class="mood-emoji">🤠</span>
+                    <span class="mood-label">Adventurous</span>
+                    <span class="mood-desc">Epic quests, exploration & wonder</span>
+                </div>
+                <div class="mood-card" data-mood="Thoughtful" tabindex="0" role="button" aria-pressed="false">
+                    <span class="mood-emoji">🤔</span>
+                    <span class="mood-label">Thoughtful</span>
+                    <span class="mood-desc">Deep ideas, mind-benders & mystery</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: GENRE -->
+        <section class="preference-section" id="genre-section">
+            <div class="preference-header">
+                <div class="pref-badge">Step 2</div>
+                <h2 class="preference-title">🎬 Choose a preferred genre</h2>
+                <p class="preference-subtitle">Pick a genre or leave it open to rely purely on your mood vibe.</p>
+            </div>
+
+            <div class="genre-grid">
+                <button type="button" class="genre-btn" data-genre="Action">
+                    <span class="genre-icon">🥊</span> Action
+                </button>
+                <button type="button" class="genre-btn" data-genre="Comedy">
+                    <span class="genre-icon">😂</span> Comedy
+                </button>
+                <button type="button" class="genre-btn" data-genre="Romance">
+                    <span class="genre-icon">💕</span> Romance
+                </button>
+                <button type="button" class="genre-btn" data-genre="Thriller">
+                    <span class="genre-icon">🔪</span> Thriller
+                </button>
+                <button type="button" class="genre-btn" data-genre="Horror">
+                    <span class="genre-icon">👻</span> Horror
+                </button>
+                <button type="button" class="genre-btn" data-genre="Science Fiction">
+                    <span class="genre-icon">🚀</span> Science Fiction
+                </button>
+                <button type="button" class="genre-btn" data-genre="Drama">
+                    <span class="genre-icon">🎭</span> Drama
+                </button>
+                <button type="button" class="genre-btn" data-genre="Mystery">
+                    <span class="genre-icon">🔍</span> Mystery
+                </button>
+                <button type="button" class="genre-btn" data-genre="Adventure">
+                    <span class="genre-icon">🗺️</span> Adventure
+                </button>
+                <button type="button" class="genre-btn" data-genre="Animation">
+                    <span class="genre-icon">🎨</span> Animation
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 3: WATCH TIME -->
+        <section class="preference-section" id="time-section">
+            <div class="preference-header">
+                <div class="pref-badge">Step 3</div>
+                <h2 class="preference-title">⏱ Available watching time</h2>
+                <p class="preference-subtitle">Strictly match movies to the time you actually have.</p>
+            </div>
+
+            <div class="time-options">
+                <div class="time-card" data-time="Under 90 minutes" tabindex="0" role="button" aria-pressed="false">
+                    <span class="time-icon">⚡</span>
+                    <span class="time-label">Under 90 min</span>
+                    <span class="time-detail">Brisk & punchy quick-watch</span>
+                </div>
+                <div class="time-card" data-time="90–120 minutes" tabindex="0" role="button" aria-pressed="false">
+                    <span class="time-icon">🎬</span>
+                    <span class="time-label">90–120 min</span>
+                    <span class="time-detail">Classic feature-length film</span>
+                </div>
+                <div class="time-card" data-time="120–150 minutes" tabindex="0" role="button" aria-pressed="false">
+                    <span class="time-icon">🍿</span>
+                    <span class="time-label">120–150 min</span>
+                    <span class="time-detail">Immersive movie-night experience</span>
+                </div>
+                <div class="time-card" data-time="More than 150 minutes" tabindex="0" role="button" aria-pressed="false">
+                    <span class="time-icon">📽️</span>
+                    <span class="time-label">150+ min</span>
+                    <span class="time-detail">Grand cinematic epic</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: LANGUAGE -->
+        <section class="preference-section" id="language-section">
+            <div class="preference-header">
+                <div class="pref-badge">Step 4</div>
+                <h2 class="preference-title">🌍 Select original language</h2>
+                <p class="preference-subtitle">Explore world cinema or stick to your preferred tongue.</p>
+            </div>
+
+            <div class="language-grid">
+                <button type="button" class="language-btn selected" data-language="Any language">
+                    <span class="lang-flag">🌐</span> Any language
+                </button>
+                <button type="button" class="language-btn" data-language="English">
+                    <span class="lang-flag">🇬🇧</span> English
+                </button>
+                <button type="button" class="language-btn" data-language="Tamil">
+                    <span class="lang-flag">🇮🇳</span> Tamil
+                </button>
+                <button type="button" class="language-btn" data-language="Hindi">
+                    <span class="lang-flag">🇮🇳</span> Hindi
+                </button>
+                <button type="button" class="language-btn" data-language="Telugu">
+                    <span class="lang-flag">🇮🇳</span> Telugu
+                </button>
+                <button type="button" class="language-btn" data-language="Malayalam">
+                    <span class="lang-flag">🇮🇳</span> Malayalam
+                </button>
+                <button type="button" class="language-btn" data-language="Korean">
+                    <span class="lang-flag">🇰🇷</span> Korean
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 5: CONTENT TYPE -->
+        <section class="preference-section" id="content-section">
+            <div class="preference-header">
+                <div class="pref-badge">Step 5</div>
+                <h2 class="preference-title">📺 Additional format preference</h2>
+                <p class="preference-subtitle">Looking for a movie or a TV series to binge?</p>
+            </div>
+
+            <div class="content-type-toggle">
+                <button type="button" class="toggle-btn selected" data-type="movies">
+                    <span class="toggle-icon">🎬</span> Movies only
+                </button>
+                <button type="button" class="toggle-btn" data-type="tv">
+                    <span class="toggle-icon">📺</span> TV series only
+                </button>
+                <button type="button" class="toggle-btn" data-type="both">
+                    <span class="toggle-icon">🎭</span> Both
+                </button>
+            </div>
+        </section>
+
+        <!-- FLOATING / BOTTOM ACTION DOCK -->
+        <div class="find-movie-section" id="find-movie-dock">
+            <div class="find-dock-inner">
+                <div id="preference-summary" class="preference-summary">
+                    <p class="summary-hint">Select a mood or genre above to activate recommendation engine</p>
+                </div>
+
+                <div class="find-actions">
+                    <button type="button" id="clear-filters-btn" class="btn-clear" aria-label="Clear all selections">
+                        🔄 Clear All
+                    </button>
+                    <button type="button" id="find-movie-btn" class="find-movie-btn btn-find-movie">
+                        🎬 Find My Movie
+                    </button>
+                </div>
+
+                <div id="validation-message" class="validation-message" style="display:none" role="alert"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">🎬 ReelFinder</div>
+                    <p class="footer-tagline">Don't search for movies. Find your next favourite.</p>
+                    <p class="footer-credit">Powered by <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer">TMDB API</a></p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="discover.html">Discover</a></li>
+                        <li><a href="watchlist.html">Watchlist</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Discover</h4>
+                    <ul>
+                        <li><a href="discover.html">By Mood</a></li>
+                        <li><a href="discover.html">By Genre</a></li>
+                        <li><a href="discover.html">By Runtime</a></li>
+                        <li><a href="discover.html">By Language</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 ReelFinder. Movie data provided by TMDB. Not affiliated with TMDB.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Search Overlay & Toast -->
+    <div class="search-overlay" id="search-overlay" style="display:none" role="dialog" aria-modal="true" aria-label="Search movies">
+        <div class="search-overlay-inner">
+            <button class="close-search" id="close-search" aria-label="Close search">✕</button>
+            <div class="search-input-wrapper">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="search-input" placeholder="Search for movies, shows..." autocomplete="off">
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/discover.js"></script>
+</body>
+</html>
